@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cruzadinha - Arquitetura Computacional</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topo">
+    <h1>Cruzadinha de Arquitetura Computacional</h1>
+    <p>Preencha as casas com base nas pistas (letras maiúsculas, sem acento e sem espaço).</p>
+  </header>
+
+  <main class="container">
+    <section class="painel-jogo">
+      <div id="tabuleiro" class="tabuleiro" aria-label="Tabuleiro da cruzadinha"></div>
+
+      <div class="controles">
+        <button id="btn-conferir" type="button">Conferir</button>
+        <button id="btn-reiniciar" type="button" class="secundario">Reiniciar</button>
+        <span id="contador" class="contador">0 de 12 palavras</span>
+      </div>
+    </section>
+
+    <aside class="painel-pistas">
+      <div class="grupo-pistas">
+        <h2>Horizontais</h2>
+        <ol id="pistas-horizontais"></ol>
+      </div>
+
+      <div class="grupo-pistas">
+        <h2>Verticais</h2>
+        <ol id="pistas-verticais"></ol>
+      </div>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
