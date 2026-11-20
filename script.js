@@ -1,257 +1,232 @@
-const LINHAS = 12;
-const COLUNAS = 12;
 
-// Palavras validadas sem conflito de letras e todas conectadas entre si:
-// 1. ADDRESSBUS (H: L5, C1..10) -> A D D R E S S B U S
-// 2. DUALCORE   (V: L0..7, C1)  -> D U A L C O R E  (cruza com ADDRESSBUS em A(5,1)? Não: em DUALCORE L5 é O! Ajustado abaixo)
+const LINHAS = 12;
+const COLUNAS = 17;
 
 const palavras = [
   {
     numero: 1,
     palavra: "DUALCORE",
-    direcao: "V",
-    linha: 0,
-    coluna: 1,
-    pista: "Processador com dois núcleos de execução no mesmo chip."
-  },
-  {
-    numero: 2,
-    palavra: "CPU",
     direcao: "H",
-    linha: 4,
-    coluna: 1,
-    pista: "Bloco que busca e executa instruções usando ULA, UC e registradores."
-  },
-  {
-    numero: 3,
-    palavra: "ADDRESSBUS",
-    direcao: "H",
-    linha: 2,
-    coluna: 1,
-    pista: "Fios que saem da CPU indicando onde ler ou escrever na memória."
-  },
-  {
-    numero: 4,
-    palavra: "DMA",
-    direcao: "V",
-    linha: 2,
-    coluna: 2,
-    pista: "Permite copiar dados entre dispositivo e RAM sem a CPU mover byte a byte."
-  },
-  {
-    numero: 5,
-    palavra: "DATABUS",
-    direcao: "V",
-    linha: 2,
-    coluna: 3,
-    pista: "Fios bidirecionais que transportam valores lidos, escritos e instruções."
+    linha: 1,
+    coluna: 10,
+    pista: "Processador que possui dois núcleos de execução no mesmo chip."
   },
   {
     numero: 6,
-    palavra: "RAM",
-    direcao: "V",
+    palavra: "ADDRESSBUS",
+    direcao: "H",
+    linha: 7,
+    coluna: 5,
+    pista: "Conjunto de fios que indica o endereço de leitura ou escrita na memória."
+  },
+  {
+    numero: 9,
+    palavra: "FLASH",
+    direcao: "H",
+    linha: 9,
+    coluna: 1,
+    pista: "Memória regravável e não volátil que pode armazenar programas."
+  },
+  {
+    numero: 2,
+    palavra: "ULA",
+    direcao: "H",
     linha: 2,
-    coluna: 4,
-    pista: "Memória volátil de trabalho que guarda programas em execução e seus dados."
+    coluna: 8,
+    pista: "Parte do processador responsável por cálculos e operações lógicas."
+  },
+  {
+    numero: 5,
+    palavra: "DMA",
+    direcao: "V",
+    linha: 7,
+    coluna: 3,
+    pista: "Recurso que transfere dados entre periféricos e memória sem intervenção contínua do processador."
+  },
+  {
+    numero: 3,
+    palavra: "RAM",
+    direcao: "H",
+    linha: 4,
+    coluna: 9,
+    pista: "Memória volátil que armazena temporariamente programas e dados em execução."
   },
   {
     numero: 7,
     palavra: "EEPROM",
     direcao: "V",
-    linha: 2,
-    coluna: 5,
-    pista: "Pequena memória não volátil do Arduino que salva configurações ao desligar."
-  },
-  {
-    numero: 8,
-    palavra: "FLASH",
-    direcao: "V",
-    linha: 0,
-    coluna: 7,
-    pista: "Memória não volátil e regravável, como o pendrive, que guarda o programa."
-  },
-  {
-    numero: 9,
-    palavra: "ULA",
-    direcao: "H",
-    linha: 4,
-    coluna: 4,
-    pista: "Parte da CPU que faz as contas e as operações lógicas."
-  },
-  {
-    numero: 10,
-    palavra: "ROM",
-    direcao: "H",
-    linha: 6,
-    coluna: 5,
-    pista: "Memória não volátil que guarda o firmware de inicialização do equipamento."
+    linha: 7,
+    coluna: 9,
+    pista: "Memória não volátil que permite salvar configurações mesmo sem alimentação elétrica."
   },
   {
     numero: 11,
-    palavra: "CACHE",
+    palavra: "ROM",
     direcao: "H",
-    linha: 8,
-    coluna: 3,
-    pista: "Memória volátil pequena e muito rápida no processador para dados usados há pouco."
+    linha: 11,
+    coluna: 8,
+    pista: "Memória não volátil que armazena instruções essenciais de inicialização."
   },
   {
-    numero: 12,
+    numero: 1,
+    palavra: "DATABUS",
+    direcao: "V",
+    linha: 1,
+    coluna: 10,
+    pista: "Conjunto de fios que transporta dados entre os componentes do computador."
+  },
+  {
+    numero: 4,
+    palavra: "CACHE",
+    direcao: "V",
+    linha: 6,
+    coluna: 5,
+    pista: "Memória pequena e rápida que mantém dados frequentemente acessados pelo processador."
+  },
+  {
+    numero: 10,
+    palavra: "CPU",
+    direcao: "H",
+    linha: 9,
+    coluna: 8,
+    pista: "Componente que interpreta e executa instruções de programas."
+  },
+  {
+    numero: 8,
     palavra: "UC",
     direcao: "V",
     linha: 7,
-    coluna: 3,
-    pista: "Parte da CPU que lê cada instrução e envia ordens aos componentes."
+    coluna: 13,
+    pista: "Parte do processador que decodifica instruções e coordena operações."
   }
 ];
 
-const tabuleiroEl = document.getElementById("tabuleiro");
-const pistasHorizontaisEl = document.getElementById("pistas-horizontais");
-const pistasVerticaisEl = document.getElementById("pistas-verticais");
-const contadorEl = document.getElementById("contador");
-const btnConferir = document.getElementById("btn-conferir");
-const btnReiniciar = document.getElementById("btn-reiniciar");
+// mapa da grade: null ou objeto { letra, indices: [{r,c,idxInWord}], roles }
+const grid = Array.from({ length: LINHAS }, () => Array(COLUNAS).fill(null));
 
-// Matriz de controle do tabuleiro
-const grade = Array.from({ length: LINHAS }, () =>
-  Array.from({ length: COLUNAS }, () => ({
-    letra: "",
-    numeros: [],
-    input: null,
-    celulaEl: null
-  }))
-);
+function criarTabuleiro() {
+  const tab = document.getElementById('tabuleiro');
+  tab.innerHTML = '';
 
-function inicializarGrade() {
-  palavras.forEach((item) => {
-    for (let i = 0; i < item.palavra.length; i++) {
-      const l = item.direcao === "H" ? item.linha : item.linha + i;
-      const c = item.direcao === "H" ? item.coluna + i : item.coluna;
-      grade[l][c].letra = item.palavra[i];
-      if (i === 0) {
-        grade[l][c].numeros.push(item.numero);
-      }
+  // criar células
+  for (let r = 0; r < LINHAS; r++) {
+    for (let c = 0; c < COLUNAS; c++) {
+      const cel = document.createElement('div');
+      cel.className = 'celula';
+      cel.dataset.linha = r + 1;
+      cel.dataset.coluna = c + 1;
+
+      const input = document.createElement('input');
+      input.maxLength = 1;
+      input.dataset.r = r + 1;
+      input.dataset.c = c + 1;
+      input.addEventListener('input', () => input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, ''));
+
+      cel.appendChild(input);
+      tab.appendChild(cel);
+    }
+  }
+
+  // posicionar palavras no grid lógico
+  palavras.forEach(p => {
+    const len = p.palavra.length;
+    const r0 = p.linha - 1;
+    const c0 = p.coluna - 1;
+
+    for (let i = 0; i < len; i++) {
+      const r = p.direcao === 'H' ? r0 : r0 + i;
+      const c = p.direcao === 'H' ? c0 + i : c0;
+
+      if (r < 0 || r >= LINHAS || c < 0 || c >= COLUNAS) continue;
+
+      if (!grid[r][c]) grid[r][c] = { letters: [], words: [] };
+      grid[r][c].letters.push(p.palavra[i]);
+      grid[r][c].words.push(p.numero);
+
+      // marcar a célula visualmente como ativa
+      const idx = r * COLUNAS + c;
+      const cellDiv = document.querySelector(`#tabuleiro .celula:nth-child(${idx + 1})`);
+      if (cellDiv) cellDiv.classList.add('ativa');
+    }
+
+    // marcar número na primeira célula da palavra
+    const numeroR = r0;
+    const numeroC = c0;
+    const index = numeroR * COLUNAS + numeroC;
+    const firstCell = document.querySelector(`#tabuleiro .celula:nth-child(${index + 1})`);
+    if (firstCell && !firstCell.querySelector('.numero')) {
+      const num = document.createElement('span');
+      num.className = 'numero';
+      num.textContent = p.numero;
+      firstCell.appendChild(num);
     }
   });
 }
 
-function renderizarTabuleiro() {
-  tabuleiroEl.style.gridTemplateColumns = `repeat(${COLUNAS}, 36px)`;
-  tabuleiroEl.innerHTML = "";
+function preencherPistas() {
+  const horiz = document.getElementById('pistas-horizontais');
+  const vert = document.getElementById('pistas-verticais');
+  horiz.innerHTML = '';
+  vert.innerHTML = '';
 
-  for (let l = 0; l < LINHAS; l++) {
-    for (let c = 0; c < COLUNAS; c++) {
-      const celulaData = grade[l][c];
-      const div = document.createElement("div");
-      div.className = "celula";
+  // ordenar por número e direção
+  const h = palavras.filter(p => p.direcao === 'H').sort((a,b)=>a.numero-b.numero);
+  const v = palavras.filter(p => p.direcao === 'V').sort((a,b)=>a.numero-b.numero);
 
-      if (celulaData.letra !== "") {
-        div.classList.add("ativa");
+  h.forEach(p => {
+    const li = document.createElement('li');
+    li.textContent = `${p.numero}. ${p.pista}`;
+    horiz.appendChild(li);
+  });
 
-        if (celulaData.numeros.length > 0) {
-          const spanNum = document.createElement("span");
-          spanNum.className = "numero";
-          spanNum.textContent = celulaData.numeros.join("/");
-          div.appendChild(spanNum);
-        }
-
-        const input = document.createElement("input");
-        input.type = "text";
-        input.maxLength = 1;
-        input.dataset.linha = l;
-        input.dataset.coluna = c;
-        input.setAttribute("aria-label", `Linha ${l + 1}, Coluna ${c + 1}`);
-
-        input.addEventListener("input", (e) => {
-          e.target.value = e.target.value.replace(/[^a-zA-Z]/g, "").toUpperCase();
-          div.classList.remove("certa", "errada");
-        });
-
-        div.appendChild(input);
-        celulaData.input = input;
-      }
-
-      celulaData.celulaEl = div;
-      tabuleiroEl.appendChild(div);
-    }
-  }
-}
-
-function renderizarPistas() {
-  pistasHorizontaisEl.innerHTML = "";
-  pistasVerticaisEl.innerHTML = "";
-
-  palavras.forEach((item) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<strong>${item.numero}.</strong> ${item.pista}`;
-    if (item.direcao === "H") {
-      pistasHorizontaisEl.appendChild(li);
-    } else {
-      pistasVerticaisEl.appendChild(li);
-    }
+  v.forEach(p => {
+    const li = document.createElement('li');
+    li.textContent = `${p.numero}. ${p.pista}`;
+    vert.appendChild(li);
   });
 }
 
-function conferirRespostas() {
-  // Limpa estados anteriores
-  for (let l = 0; l < LINHAS; l++) {
-    for (let c = 0; c < COLUNAS; c++) {
-      if (grade[l][c].celulaEl) {
-        grade[l][c].celulaEl.classList.remove("certa", "errada");
-      }
-    }
+function getWordCells(p) {
+  const cells = [];
+  const len = p.palavra.length;
+  const r0 = p.linha - 1;
+  const c0 = p.coluna - 1;
+  for (let i = 0; i < len; i++) {
+    const r = p.direcao === 'H' ? r0 : r0 + i;
+    const c = p.direcao === 'H' ? c0 + i : c0;
+    const idx = r * COLUNAS + c;
+    const cellDiv = document.querySelector(`#tabuleiro .celula:nth-child(${idx + 1})`);
+    if (cellDiv) cells.push(cellDiv);
   }
+  return cells;
+}
 
-  let acertos = 0;
-
-  palavras.forEach((item) => {
-    let palavraCorreta = true;
-    const celulasDaPalavra = [];
-
-    for (let i = 0; i < item.palavra.length; i++) {
-      const l = item.direcao === "H" ? item.linha : item.linha + i;
-      const c = item.direcao === "H" ? item.coluna + i : item.coluna;
-      const celula = grade[l][c];
-      celulasDaPalavra.push(celula.celulaEl);
-
-      if (celula.input.value.toUpperCase() !== item.palavra[i]) {
-        palavraCorreta = false;
-      }
-    }
-
-    if (palavraCorreta) {
-      acertos++;
-      celulasDaPalavra.forEach((el) => {
-        el.classList.remove("errada");
-        el.classList.add("certa");
-      });
-    } else {
-      celulasDaPalavra.forEach((el) => {
-        if (!el.classList.contains("certa")) {
-          el.classList.add("errada");
-        }
-      });
-    }
+function conferir() {
+  let certas = 0;
+  palavras.forEach(p => {
+    const cells = getWordCells(p);
+    const tentativa = cells.map(cd => (cd.querySelector('input').value || '').toUpperCase()).join('');
+    const correta = p.palavra.toUpperCase();
+    const ok = tentativa === correta;
+    if (ok) certas++;
+    cells.forEach(cd => {
+      cd.classList.remove('certa','errada');
+      cd.classList.add(ok ? 'certa' : 'errada');
+    });
   });
-
-  contadorEl.textContent = `${acertos} de ${palavras.length} palavras`;
+  const contador = document.getElementById('contador');
+  contador.textContent = `${certas} de ${palavras.length} palavras`;
 }
 
-function reiniciarJogo() {
-  for (let l = 0; l < LINHAS; l++) {
-    for (let c = 0; c < COLUNAS; c++) {
-      const celula = grade[l][c];
-      if (celula.input) {
-        celula.input.value = "";
-        celula.celulaEl.classList.remove("certa", "errada");
-      }
-    }
-  }
-  contadorEl.textContent = `0 de ${palavras.length} palavras`;
+function reiniciar() {
+  document.querySelectorAll('#tabuleiro input').forEach(i => i.value = '');
+  document.querySelectorAll('.celula').forEach(c => c.classList.remove('certa','errada'));
+  document.getElementById('contador').textContent = `0 de ${palavras.length} palavras`;
 }
 
-btnConferir.addEventListener("click", conferirRespostas);
-btnReiniciar.addEventListener("click", reiniciarJogo);
-
-inicializarGrade();
-renderizarTabuleiro();
-renderizarPistas();
+document.addEventListener('DOMContentLoaded', () => {
+  criarTabuleiro();
+  preencherPistas();
+  document.getElementById('btn-conferir').addEventListener('click', conferir);
+  document.getElementById('btn-reiniciar').addEventListener('click', reiniciar);
+});
