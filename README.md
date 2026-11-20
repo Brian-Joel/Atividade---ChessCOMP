@@ -33,3 +33,7 @@ Palavras usadas (no tabuleiro) e pistas
 10. CPU (H) — Componente que interpreta e executa instruções de programas.
 11. ROM (H) — Memória não volátil que armazena instruções essenciais de inicialização.
 12. DATABUS (V) — Conjunto de fios que transporta dados entre os componentes do computador.
+
+Link do site:
+---------------
+https://brian-joel.github.io/Atividade---ChessCOMP/
