@@ -11,6 +11,10 @@ body {
   padding: 24px;
 }
 
+.oculto {
+  display: none !important;
+}
+
 .topo {
   text-align: center;
   margin-bottom: 24px;
@@ -34,6 +38,38 @@ body {
   font-size: 0.95rem;
 }
 
+/* Navegação entre Cruzadinha e Minigame */
+.nav-modos {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background-color: #2c241e;
+  color: #f3e5ab;
+  border: 2px solid #8c6d46;
+  padding: 9px 18px;
+  border-radius: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.92rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  background-color: #3e2f28;
+}
+
+.tab-btn.ativa {
+  background-color: #d4af37;
+  color: #1e1b18;
+  border-color: #f3e5ab;
+}
+
 .container {
   max-width: 1120px;
   margin: 0 auto;
@@ -44,6 +80,7 @@ body {
   align-items: flex-start;
 }
 
+/* --- ESTILOS DA CRUZADINHA --- */
 .painel-jogo {
   background: #f8f5ee;
   color: #1e1b18;
@@ -54,21 +91,21 @@ body {
 }
 
 #tabuleiro {
-    display: grid;
-    grid-template-columns: repeat(17, 36px);
-    grid-template-rows: repeat(12, 36px);
-    width: max-content;
+  display: grid;
+  grid-template-columns: repeat(17, 36px);
+  grid-template-rows: repeat(12, 36px);
+  width: max-content;
 }
 
 .container-tabuleiro {
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 10px;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 10px;
 }
 
 #tabuleiro input:focus-visible {
-    outline: 2px solid #d6a84b;
-    outline-offset: -2px;
+  outline: 2px solid #d6a84b;
+  outline-offset: -2px;
 }
 
 .celula {
@@ -198,4 +235,334 @@ button.secundario:hover {
   font-size: 0.92rem;
   line-height: 1.45;
   color: #2c221e;
+}
+
+/* --- ESTILOS DO MINIGAME CLOCK & CPI --- */
+.painel-minigame {
+  width: 100%;
+  max-width: 920px;
+  background: #f8f5ee;
+  color: #1e1b18;
+  padding: 24px;
+  border-radius: 10px;
+  border: 3px solid #8c6d46;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.barra-superior-mini {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background-color: #efe9dc;
+  border: 1px solid #cbbba0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.formulas-ref {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: #3e2f28;
+}
+
+.separador {
+  color: #8c6d46;
+  font-weight: bold;
+}
+
+.placar-xadrez {
+  display: flex;
+  gap: 16px;
+  font-weight: bold;
+  color: #5c4033;
+}
+
+.subtabs-mini {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #cbbba0;
+  padding-bottom: 12px;
+}
+
+.subtab-btn {
+  background-color: #e7dfd1;
+  color: #2c221e;
+  border: 2px solid #cbbba0;
+  padding: 8px 14px;
+  font-size: 0.88rem;
+}
+
+.subtab-btn.ativa {
+  background-color: #5c4033;
+  color: #fdfbf7;
+  border-color: #5c4033;
+}
+
+.arena-duelo {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.card-cpu {
+  flex: 1;
+  min-width: 260px;
+  background-color: #fdfbf7;
+  border: 2px solid #cbbba0;
+  border-radius: 8px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: background-color 0.25s, border-color 0.25s;
+}
+
+.card-cpu.vencedor {
+  background-color: #bbf7d0;
+  border-color: #16a34a;
+}
+
+.card-cpu.perdedor {
+  background-color: #fecaca;
+  border-color: #dc2626;
+}
+
+.cabecalho-cpu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #d6cbb8;
+  padding-bottom: 10px;
+}
+
+.peca-icone {
+  font-size: 2.2rem;
+  line-height: 1;
+  color: #3e2f28;
+}
+
+.cabecalho-cpu h3 {
+  font-size: 1.1rem;
+  color: #2c221e;
+}
+
+.cabecalho-cpu small {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #6b584c;
+  font-size: 0.82rem;
+}
+
+.specs-cpu {
+  list-style: none;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.specs-cpu li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: rgba(140, 109, 70, 0.08);
+  border-radius: 5px;
+}
+
+.onda-container {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.82rem;
+  color: #5c4033;
+}
+
+.onda-clock {
+  margin-top: 6px;
+  height: 22px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.pulso-barra {
+  flex: 1;
+  background-color: #8c6d46;
+  border-radius: 2px 2px 0 0;
+  animation: pulsarClock infinite alternate ease-in-out;
+}
+
+@keyframes pulsarClock {
+  0% {
+    height: 30%;
+    opacity: 0.5;
+  }
+  100% {
+    height: 100%;
+    opacity: 1;
+  }
+}
+
+.resultado-cpu {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.75);
+  color: #1e1b18;
+  font-size: 0.95rem;
+}
+
+.vs-badge {
+  align-self: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #f3e5ab;
+  background-color: #5c4033;
+  border: 2px solid #d4af37;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pergunta-duelo {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.05rem;
+  color: #2c221e;
+  margin: 22px 0 14px;
+}
+
+.botoes-escolha {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-escolha:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.feedback-duelo {
+  margin-top: 20px;
+  background-color: #efe9dc;
+  border: 2px solid #8c6d46;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.feedback-titulo {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #2c221e;
+}
+
+.feedback-passos {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #2c221e;
+}
+
+.acao-proxima {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Calculadora Livre */
+.grid-calc {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.box-calc {
+  flex: 1;
+  min-width: 260px;
+  background: #fdfbf7;
+  border: 2px solid #cbbba0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.box-calc h3 {
+  font-family: "Georgia", serif;
+  color: #3e2f28;
+  border-bottom: 1px solid #d6cbb8;
+  padding-bottom: 6px;
+}
+
+.box-calc label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #2c221e;
+}
+
+.input-grupo {
+  display: flex;
+  gap: 8px;
+}
+
+.box-calc input,
+.box-calc select {
+  padding: 8px 10px;
+  border: 1px solid #8c6d46;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  background: #fff;
+  color: #1e1b18;
+}
+
+.box-calc input {
+  flex: 1;
+}
+
+.saida-calc {
+  background: #efe9dc;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #2c221e;
+}
+
+.veredito-calc {
+  margin-top: 18px;
+  padding: 14px;
+  background: #efe9dc;
+  border: 2px solid #8c6d46;
+  border-radius: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  color: #2c221e;
+}
+
+.card-cpu.empate {
+  background-color: #fef3c7;
+  border-color: #d4af37;
 }
