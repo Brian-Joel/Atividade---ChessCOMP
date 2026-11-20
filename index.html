@@ -3,20 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cruzadinha - Arquitetura Computacional</title>
+  <title>ChessCOMP - Arquitetura Computacional</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="topo">
-    <h1>Cruzadinha de Arquitetura Computacional</h1>
-    <p>Preencha as casas com base nas pistas (letras maiúsculas, sem acento e sem espaço).</p>
+    <h1>Arquitetura Computacional</h1>
+    <p id="subtitulo-topo">Preencha as casas com base nas pistas (letras maiúsculas, sem acento e sem espaço).</p>
+
+    <nav class="nav-modos" aria-label="Alternar modo de jogo">
+      <button id="tab-cruzadinha" type="button" class="tab-btn ativa">Cruzadinha</button>
+      <button id="tab-minigame" type="button" class="tab-btn">★ Minigame: Clock &amp; CPI</button>
+    </nav>
   </header>
 
-  <main class="container">
+  <!-- SEÇÃO 1: CRUZADINHA ORIGINAL -->
+  <main id="view-cruzadinha" class="container">
     <section class="painel-jogo">
       <div class="container-tabuleiro">
-    <div id="tabuleiro"></div>
-</div>
+        <div id="tabuleiro"></div>
+      </div>
 
       <div class="controles">
         <button id="btn-conferir" type="button">Conferir</button>
@@ -36,6 +42,141 @@
         <ol id="pistas-verticais"></ol>
       </div>
     </aside>
+  </main>
+
+  <!-- SEÇÃO 2: MINIGAME CLOCK & CPI -->
+  <main id="view-minigame" class="container oculto">
+    <section class="painel-minigame">
+      <div class="barra-superior-mini">
+        <div class="formulas-ref">
+          <span><strong>Período:</strong> P = 1 ÷ f (ns)</span>
+          <span class="separador">|</span>
+          <span><strong>Tempo/Instrução:</strong> T = CPI × P</span>
+        </div>
+
+        <div class="placar-xadrez">
+          <span>Vitórias: <strong id="placar-vitorias">0</strong></span>
+          <span>Sequência: <strong id="placar-sequencia">0</strong></span>
+        </div>
+      </div>
+
+      <div class="subtabs-mini">
+        <button id="btn-modo-desafio" type="button" class="subtab-btn ativa">♘ Modo Desafio</button>
+        <button id="btn-modo-calc" type="button" class="subtab-btn">⚙ Calculadora Livre</button>
+      </div>
+
+      <!-- SUBMODO A: DESAFIO -->
+      <div id="area-desafio">
+        <div class="arena-duelo">
+          <article id="card-cpu-a" class="card-cpu">
+            <div class="cabecalho-cpu">
+              <span class="peca-icone">♘</span>
+              <div>
+                <h3>Peças Brancas (CPU A)</h3>
+                <small id="desc-cpu-a">Arquitetura Otimizada</small>
+              </div>
+            </div>
+
+            <ul class="specs-cpu">
+              <li><span>Frequência (f):</span> <strong id="freq-a">500 MHz (0,5 GHz)</strong></li>
+              <li><span>CPI médio:</span> <strong id="cpi-a">3 ciclos</strong></li>
+            </ul>
+
+            <div class="onda-container">
+              <span class="onda-label">Pulso de Clock:</span>
+              <div id="onda-a" class="onda-clock"></div>
+            </div>
+
+            <div id="res-a" class="resultado-cpu oculto"></div>
+          </article>
+
+          <div class="vs-badge">VS</div>
+
+          <article id="card-cpu-b" class="card-cpu">
+            <div class="cabecalho-cpu">
+              <span class="peca-icone">♞</span>
+              <div>
+                <h3>Peças Pretas (CPU B)</h3>
+                <small id="desc-cpu-b">Clock Elevado</small>
+              </div>
+            </div>
+
+            <ul class="specs-cpu">
+              <li><span>Frequência (f):</span> <strong id="freq-b">1 GHz</strong></li>
+              <li><span>CPI médio:</span> <strong id="cpi-b">8 ciclos</strong></li>
+            </ul>
+
+            <div class="onda-container">
+              <span class="onda-label">Pulso de Clock:</span>
+              <div id="onda-b" class="onda-clock"></div>
+            </div>
+
+            <div id="res-b" class="resultado-cpu oculto"></div>
+          </article>
+        </div>
+
+        <p class="pergunta-duelo">Quem executa a instrução em <strong>MENOS tempo (T)</strong>?</p>
+
+        <div class="botoes-escolha">
+          <button type="button" class="btn-escolha" data-escolha="A">♘ Brancas vencem</button>
+          <button type="button" class="btn-escolha secundario" data-escolha="EMPATE">= Empate</button>
+          <button type="button" class="btn-escolha" data-escolha="B">♞ Pretas vencem</button>
+        </div>
+
+        <div id="feedback-duelo" class="feedback-duelo oculto">
+          <p id="feedback-titulo" class="feedback-titulo"></p>
+          <div id="feedback-passos" class="feedback-passos"></div>
+          <div class="acao-proxima">
+            <button id="btn-proxima-rodada" type="button">Próxima Rodada →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBMODO B: CALCULADORA LIVRE -->
+      <div id="area-calculadora" class="oculto">
+        <div class="grid-calc">
+          <div class="box-calc">
+            <h3>♘ Processador A</h3>
+            <label>
+              Frequência:
+              <div class="input-grupo">
+                <input id="calc-freq-a" type="number" step="any" min="0.1" value="500" />
+                <select id="calc-unit-a">
+                  <option value="MHz" selected>MHz</option>
+                  <option value="GHz">GHz</option>
+                </select>
+              </div>
+            </label>
+            <label>
+              CPI (Ciclos por Instrução):
+              <input id="calc-cpi-a" type="number" step="any" min="1" value="3" />
+            </label>
+            <div id="saida-calc-a" class="saida-calc"></div>
+          </div>
+
+          <div class="box-calc">
+            <h3>♞ Processador B</h3>
+            <label>
+              Frequência:
+              <div class="input-grupo">
+                <input id="calc-freq-b" type="number" step="any" min="0.1" value="1" />
+                <select id="calc-unit-b">
+                  <option value="MHz">MHz</option>
+                  <option value="GHz" selected>GHz</option>
+                </select>
+              </div>
+            </label>
+            <label>
+              CPI (Ciclos por Instrução):
+              <input id="calc-cpi-b" type="number" step="any" min="1" value="8" />
+            </label>
+            <div id="saida-calc-b" class="saida-calc"></div>
+          </div>
+        </div>
+
+        <div id="veredito-calc" class="veredito-calc"></div>
+      </div>
+    </section>
   </main>
 
   <script src="script.js"></script>
